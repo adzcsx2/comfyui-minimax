@@ -1,0 +1,32 @@
+name: Build container on GitHub
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Push the tested container to GHCR
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build using mirror sources
+        run: docker build --tag "ghcr.io/${GITHUB_REPOSITORY,,}:test" .
+      - name: Verify Python imports without loading GPU models
+        run: >-
+          docker run --rm --entrypoint /opt/venv/bin/python
+          "ghcr.io/${GITHUB_REPOSITORY,,}:test"
+          -c 'import torch, transformers, safetensors; print(torch.__version__, torch.version.cuda)'
+      - name: Publish when requested
+        if: inputs.publish
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          docker push "ghcr.io/${GITHUB_REPOSITORY,,}:test"

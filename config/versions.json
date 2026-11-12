@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "comfyui_repository": "Comfy-Org/ComfyUI",
+  "comfyui_commit": "c5751c81abe131202eea9e4c66d000589013dd0b",
+  "comfyui_archive_sha256": "c983ed82b6f56f6c5377633fcb47283ea57867239c2d43df32850583c157c84a",
+  "python": "3.12",
+  "torch": "2.13.0+cu130",
+  "torchvision": "0.28.0+cu130",
+  "autodl_base_application": "spcwDDc6XW:v9.49",
+  "control_model": "MiniMax-H3-Fun-Controlnet-Union-2.0",
+  "control_blocks": 10,
+  "control_layers": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45],
+  "inpaint_masked_pixel_mode": "post_norm",
+  "fps": 24,
+  "sources_verified_at": "2026-11-12"
+}

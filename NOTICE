@@ -1,0 +1,11 @@
+comfyui-minimax deployment scripts
+
+The deployment scripts in this repository use the Apache-2.0 license in LICENSE.
+ComfyUI is downloaded separately from Comfy-Org/ComfyUI and retains its GPL-3.0
+license and upstream notices. Model files are not included in this repository
+or in the Docker build. Their upstream licenses and notices continue to apply:
+
+ComfyUI: https://github.com/Comfy-Org/ComfyUI
+MiniMax H3: https://huggingface.co/MiniMaxAI/MiniMax-H3
+PAI control extension: https://huggingface.co/alibaba-pai/MiniMax-H3-Fun-Controlnet-Union-2.0
+ComfyUI model packaging: https://huggingface.co/Comfy-Org/MiniMax-H3

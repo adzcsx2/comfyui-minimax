@@ -1,5 +1,43 @@
-# Object file
-*.o
+# Credentials and machine-specific settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
 
-# Ada Library Information
+# Runtime data and model weights
+.local/
+runtime/
+models/
+input/
+output/
+temp/
+logs/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.gguf
+*.onnx
+*.part
+*.log
+*.mp4
+*.wav
+
+# Python / editors / OS
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.o
 *.ali
