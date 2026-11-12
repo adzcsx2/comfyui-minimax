@@ -11,6 +11,6 @@ if [[ -f .local/server.pid ]]; then
     exit 0
   fi
 fi
-nohup bash scripts/start.sh > .local/server.log 2>&1 &
+nohup bash scripts/start.sh "$@" > .local/server.log 2>&1 &
 echo "$!" > .local/server.pid
 echo 'Cloud server launched; inspect .local/server.log and run scripts/doctor.py --server before treating it as ready.'
