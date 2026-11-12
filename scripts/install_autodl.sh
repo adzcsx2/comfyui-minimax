@@ -7,6 +7,10 @@ set -a
 source config/mirrors.env
 [[ ! -f .env ]] || source .env
 set +a
+if [[ "${AUTODL_NETWORK_TURBO:-0}" == 1 ]]; then
+  [[ -r /etc/network_turbo ]] || { echo 'AutoDL network acceleration script is missing.' >&2; exit 1; }
+  source /etc/network_turbo >/dev/null 2>&1
+fi
 export COMFYUI_DIR="${COMFYUI_DIR:-$ROOT/runtime/ComfyUI}"
 export VENV_DIR="${VENV_DIR:-$ROOT/runtime/venv}"
 export MODEL_DIR="${MODEL_DIR:-/root/autodl-tmp/minimax-h3-models}"
@@ -32,10 +36,10 @@ fi
 PY="$VENV_DIR/bin/python"
 "$PY" -m pip install --index-url "$PIP_INDEX_URL" --upgrade pip
 "$PY" scripts/fetch_comfyui.py --destination "$COMFYUI_DIR"
-"$PY" -m pip install --index-url "$PYTORCH_INDEX_URL" --extra-index-url "$PIP_INDEX_URL" \
+"$PY" -m pip install --index-url "$PIP_INDEX_URL" \
   -r config/requirements-pytorch.txt
 "$PY" -m pip install --index-url "$PIP_INDEX_URL" -c config/constraints.txt \
-  -r "$COMFYUI_DIR/requirements.txt"
+  -r "$COMFYUI_DIR/requirements.txt" -r config/requirements-mirror-overrides.txt
 "$PY" -m pip check
 mkdir -p "$COMFYUI_DIR/user/default/workflows" "$COMFYUI_DIR/input" "$COMFYUI_DIR/output" .local
 cp -R custom_nodes/h3_control_guard "$COMFYUI_DIR/custom_nodes/"

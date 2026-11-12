@@ -30,6 +30,7 @@
     {
       "role": "video_vae",
       "path": "vae/minimax_h3_video_vae_int8_convrot.safetensors",
+      "public_aliases": ["minimax_h3_video_vae_int8_convrot-v2.safetensors"],
       "bytes": 2811065184,
       "sha256": "52a2c8c73583c86e4f41cdcce3a6ad0ea562987bc0bf3d60a0cef5f5c8e60c0e"
     }

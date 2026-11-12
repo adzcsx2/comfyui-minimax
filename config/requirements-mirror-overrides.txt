@@ -1,0 +1,3 @@
+# Required by the pinned ComfyUI template bundle; missing from TUNA's index.
+# Same 0.1.31 wheel and SHA-256 as official PyPI metadata, fetched via Aliyun mirror.
+comfyui-workflow-templates-media-assets-02 @ https://mirrors.aliyun.com/pypi/packages/d3/42/c26a673c07e425e9ce790765319f843656713e8bc0d9de26e909fa1055c3/comfyui_workflow_templates_media_assets_02-0.1.31-py3-none-any.whl#sha256=1e8307681574828e7f044bdcf8293a0c57d9dc97087d44dc2c308459733ac072

@@ -17,18 +17,30 @@ def verified(path: Path, item: dict) -> bool:
     )
 
 
-def public_candidates(roots: str, wanted: set[str]) -> dict[str, Path]:
+def public_candidates(roots: str, wanted: set[str]) -> dict[str, list[Path]]:
     result = {}
+    seen = set()
     for name in filter(None, roots.split(os.pathsep)):
         root = Path(name)
         if not root.is_dir():
             continue
         for directory, _, files in os.walk(root, followlinks=False):
             for filename in wanted.intersection(files):
-                result.setdefault(filename, Path(directory) / filename)
-            if wanted.issubset(result):
-                return result
+                candidate = Path(directory) / filename
+                key = (filename, candidate.resolve())
+                if key not in seen:
+                    result.setdefault(filename, []).append(candidate)
+                    seen.add(key)
     return result
+
+
+def select_public(item: dict, candidates: dict[str, list[Path]]) -> Path | None:
+    names = [Path(item["path"]).name, *item.get("public_aliases", [])]
+    for name in names:
+        for candidate in candidates.get(name, []):
+            if verified(candidate, item):
+                return candidate
+    return None
 
 
 def main() -> None:
@@ -47,7 +59,12 @@ def main() -> None:
         {}
         if args.no_public
         else public_candidates(
-            config.get("PUBLIC_MODEL_ROOTS", ""), {Path(x["path"]).name for x in manifest["models"]}
+            config.get("PUBLIC_MODEL_ROOTS", ""),
+            {
+                name
+                for item in manifest["models"]
+                for name in [Path(item["path"]).name, *item.get("public_aliases", [])]
+            },
         )
     )
     failures = []
@@ -60,8 +77,8 @@ def main() -> None:
         if target.exists() or target.is_symlink():
             failures.append(f"Wrong or broken existing model: {name}")
             continue
-        shared = candidates.get(name)
-        if shared and verified(shared, item):
+        shared = select_public(item, candidates)
+        if shared:
             if args.check_only:
                 failures.append(
                     f"Verified public model is not linked yet: {name}; run without --check-only"
